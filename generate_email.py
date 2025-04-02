@@ -12,11 +12,11 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # Import from the new location
 try:
-    from src.icloud.generateEmail import generateIcloudEmail
+    from src.icloud.generate_email import generateIcloudEmail
 except ImportError:
     # If that fails, try relative imports
     try:
-        from src.icloud.generateEmail import generateIcloudEmail
+        from src.icloud.generate_email import generateIcloudEmail
     except ImportError:
         raise ImportError("Failed to import iCloud email generator. Make sure all dependencies are installed.")
 

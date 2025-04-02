@@ -17,7 +17,7 @@ class HideMyEmail:
         "clientBuildNumber": "2413Project28",
         "clientMasteringNumber": "2413B20",
         "clientId": "",
-        "dsid": "", # Directory Services Identifier (DSID) is a method of identifying AppleID accounts
+        "dsid": "",  # Directory Services Identifier (DSID) is a method of identifying AppleID accounts
     }
 
     def __init__(self, label: str = "Cursor-Auto-iCloud", cookies: str = ""):
@@ -33,7 +33,9 @@ class HideMyEmail:
         self.cookies = cookies
 
     async def __aenter__(self):
-        connector = aiohttp.TCPConnector(ssl_context=ssl.create_default_context(cafile=certifi.where())) 
+        connector = aiohttp.TCPConnector(
+            ssl_context=ssl.create_default_context(cafile=certifi.where())
+        )
         self.s = aiohttp.ClientSession(
             headers={
                 "Connection": "keep-alive",
@@ -57,8 +59,9 @@ class HideMyEmail:
 
         return self
 
-    async def __aexit__(self, exc_t, exc_v, exc_tb):
+    async def __aexit__(self, _, _exc, _tb):
         await self.s.close()
+        return True
 
     @property
     def cookies(self) -> str:
@@ -74,7 +77,9 @@ class HideMyEmail:
         try:
             logging.debug("正在生成 iCloud 隐藏邮箱...")
             async with self.s.post(
-                f"{self.base_url_v1}/generate", params=self.params, json={"langCode": "en-us"}
+                f"{self.base_url_v1}/generate",
+                params=self.params,
+                json={"langCode": "en-us"},
             ) as resp:
                 res = await resp.json()
                 return res
@@ -110,7 +115,9 @@ class HideMyEmail:
         """List all HME"""
         logging.info("正在获取邮箱列表...")
         try:
-            async with self.s.get(f"{self.base_url_v2}/list", params=self.params) as resp:
+            async with self.s.get(
+                f"{self.base_url_v2}/list", params=self.params
+            ) as resp:
                 res = await resp.json()
                 return res
         except asyncio.TimeoutError:
@@ -120,12 +127,13 @@ class HideMyEmail:
             logging.error(f"获取邮箱列表失败: {str(e)}")
             return {"error": 1, "reason": str(e)}
 
-
     async def delete_email(self, email: str) -> dict:
         """Deletes an email"""
         logging.info(f"正在删除邮箱 {email}...")
-        try: 
-            async with self.s.post(f"{self.base_url_v1}/delete", params=self.params, json={"hme": email}) as resp:
+        try:
+            async with self.s.post(
+                f"{self.base_url_v1}/delete", params=self.params, json={"hme": email}
+            ) as resp:
                 res = await resp.json()
                 return res
         except asyncio.TimeoutError:
@@ -134,4 +142,3 @@ class HideMyEmail:
         except Exception as e:
             logging.error(f"删除邮箱失败: {str(e)}")
             return {"error": 1, "reason": str(e)}
-        

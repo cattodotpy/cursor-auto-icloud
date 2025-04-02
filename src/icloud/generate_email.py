@@ -13,7 +13,7 @@ from typing import List, Optional
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils.logger import logging
 from utils.config import Config
-from icloud.hidemyemail import HideMyEmail
+from src.icloud.hide_my_email import HideMyEmail
 
 async def _generate_single_email(cookies: str, label: str = "Cursor-Auto-iCloud") -> Optional[str]:
     """
@@ -76,7 +76,7 @@ async def _generate_multiple_emails(count: int, cookies: str, label: str = "Curs
     # Filter out None values
     return [email for email in results if email]
 
-def generateIcloudEmail(count: int = 1, save_to_file: bool = True) -> List[str]:
+def generate_icloud_email(count: int = 1, save_to_file: bool = True) -> List[str]:
     """
     Generate a specified number of iCloud Hide My Email addresses
     
@@ -146,7 +146,7 @@ if __name__ == "__main__":
             logging.error(f"无效的数量参数: {sys.argv[1]}")
             sys.exit(1)
     
-    emails = generateIcloudEmail(count)
+    emails = generate_icloud_email(count)
     if emails:
         print(f"成功生成 {len(emails)} 个邮箱地址:")
         for email in emails:

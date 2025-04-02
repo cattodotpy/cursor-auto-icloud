@@ -63,9 +63,9 @@ class BrowserManager:
 
         # For PyInstaller bundles
         if hasattr(sys, "_MEIPASS"):
-            extension_path = os.path.join(sys._MEIPASS, "src", exname)
+            extension_path = os.path.join(sys._MEIPASS, "src", exname) # type: ignore
             if not os.path.exists(extension_path):
-                extension_path = os.path.join(sys._MEIPASS, exname)
+                extension_path = os.path.join(sys._MEIPASS, exname) # type: ignore
 
         if not os.path.exists(extension_path):
             raise FileNotFoundError(f"插件不存在: {extension_path}")
